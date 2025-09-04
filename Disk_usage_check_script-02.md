@@ -1,7 +1,7 @@
 # Disk Usage Check Script
-**Goal:**
-> Check the disk usage of / (root) partition.
-> If usage is more than 80%, print a warning message; otherwise, print Disk usage is normal.
+> **Goal:**
+- Check the disk usage of / (root) partition.
+- If usage is more than 80%, print a warning message; otherwise, print Disk usage is normal.
 
 ```bash
 #!/bin/bash
