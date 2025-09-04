@@ -10,7 +10,7 @@
 ```bash
 #!/bin/bash
 
-**# Detect OS**
+# Detect OS
 if [ -f /etc/os-release ]; then
     . /etc/os-release
     OS=$ID
