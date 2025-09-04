@@ -1,0 +1,75 @@
+# User Creation Script
+> **Goal: 1**
+- Take a username as input. 
+- Check if the user already exists.
+- If not, create the user and set a default password.
+- Print a confirmation message
+```bash
+#!/bin/bash
+
+# Ask for username
+read -p "Enter the username to create: " username
+
+# Check if user already exists
+if id "$username" &>/dev/null; then
+    echo "User '$username' already exists!"
+else
+    # Create user
+    sudo useradd "$username"
+    
+    # Set default password (you can change 'Password123' to something else)
+    echo "Password123" | sudo passwd --stdin "$username" 2>/dev/null || echo "$username:Password123" | sudo chpasswd
+    
+    echo "User '$username' created successfully!"
+    echo "Default password: Password123"
+fi
+```
+> **How it works:**
+
+1.  id "$username" checks if the user exists.
+2.  If not, useradd creates the user.
+3.  passwd --stdin or chpasswd sets a default password.
+4.  Prints confirmation with username and password.
+
+## Creating a User with password setting prompt in secure way 
+
+- Take the username as input.
+- Prompt for a password securely (without showing it on the screen).
+- Create the user and set the entered password.
+- Print a success message.
+
+```bash
+#!/bin/bash
+
+# Ask for username
+read -p "Enter the username to create: " username
+
+# Check if user already exists
+if id "$username" &>/dev/null; then
+    echo "User '$username' already exists!"
+else
+    # Ask for password securely
+    read -s -p "Enter password for $username: " password
+    echo
+    read -s -p "Confirm password for $username: " password2
+    echo
+
+    # Check if passwords match
+    if [ "$password" != "$password2" ]; then
+        echo "Passwords do not match. Exiting."
+        exit 1
+    fi
+
+    # Create user
+    sudo useradd "$username"
+    
+    # Set the entered password
+    echo "$username:$password" | sudo chpasswd
+    
+    echo "User '$username' created successfully with the given password!"
+fi
+```
+> **How this works:**
+- read -s hides password input on screen.
+- password2 confirms the password to avoid typos.
+- chpasswd sets the username and password securely.
